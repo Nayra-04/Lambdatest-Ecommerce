@@ -1,0 +1,1332 @@
+{
+  "info": {
+    "_postman_id": "4e08b5a7-f0cd-42d0-a148-ad0524718559",
+    "name": "Platzi Fake Store API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54206298",
+    "_collection_link": "https://go.postman.co/collection/54206298-4e08b5a7-f0cd-42d0-a148-ad0524718559?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "p",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Response should be an array\", function () {\r",
+                  "    pm.expect(jsonData).to.be.an(\"array\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Each product should have valid structure\", function () {\r",
+                  "    jsonData.forEach(function (item) {\r",
+                  "\r",
+                  "        pm.expect(item).to.have.property(\"id\");\r",
+                  "        pm.expect(item).to.have.property(\"title\");\r",
+                  "        pm.expect(item).to.have.property(\"slug\");\r",
+                  "        pm.expect(item).to.have.property(\"price\");\r",
+                  "        pm.expect(item).to.have.property(\"description\");\r",
+                  "        pm.expect(item).to.have.property(\"category\");\r",
+                  "        pm.expect(item).to.have.property(\"images\");\r",
+                  "\r",
+                  "        // category structure\r",
+                  "        pm.expect(item.category).to.have.property(\"id\");\r",
+                  "        pm.expect(item.category).to.have.property(\"name\");\r",
+                  "        pm.expect(item.category).to.have.property(\"slug\");\r",
+                  "        pm.expect(item.category).to.have.property(\"image\");\r",
+                  "\r",
+                  "        // images should be array\r",
+                  "        pm.expect(item.images).to.be.an(\"array\");\r",
+                  "\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Product fields should have correct data types\", function () {\r",
+                  "    jsonData.forEach(function (item) {\r",
+                  "\r",
+                  "        pm.expect(item.id).to.be.a(\"number\");\r",
+                  "        pm.expect(item.title).to.be.a(\"string\");\r",
+                  "        pm.expect(item.slug).to.be.a(\"string\");\r",
+                  "        pm.expect(item.price).to.be.a(\"number\");\r",
+                  "        pm.expect(item.description).to.be.a(\"string\");\r",
+                  "\r",
+                  "        pm.expect(item.category.id).to.be.a(\"number\");\r",
+                  "        pm.expect(item.category.name).to.be.a(\"string\");\r",
+                  "\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"At least one product exists\", function () {\r",
+                  "    pm.expect(jsonData.length).to.be.above(0);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.escuelajs.co/api/v1/products",
+              "protocol": "https",
+              "host": [
+                "api",
+                "escuelajs",
+                "co"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a single product by id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code should be 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should not contain error\", function () {\r",
+                  "    pm.expect(jsonData.name).to.not.eql(\"EntityNotFoundError\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should match expected product structure\", function () {\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"id\", 4);\r",
+                  "    pm.expect(jsonData).to.have.property(\"title\", \"Handmade Fresh Table\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"slug\", \"handmade-fresh-table\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"price\", 687);\r",
+                  "    pm.expect(jsonData).to.have.property(\"description\");\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"category\");\r",
+                  "    pm.expect(jsonData.category).to.have.property(\"id\", 5);\r",
+                  "    pm.expect(jsonData.category).to.have.property(\"name\", \"Others\");\r",
+                  "    pm.expect(jsonData.category).to.have.property(\"slug\", \"others\");\r",
+                  "    pm.expect(jsonData.category).to.have.property(\"image\");\r",
+                  "\r",
+                  "    pm.expect(jsonData.images).to.be.an(\"array\");\r",
+                  "    pm.expect(jsonData.images.length).to.be.above(0);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.escuelajs.co/api/v1/products/7",
+              "protocol": "https",
+              "host": [
+                "api",
+                "escuelajs",
+                "co"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "7"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a single product by slug",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code should be 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should not contain error\", function () {\r",
+                  "    pm.expect(jsonData.name).to.not.eql(\"EntityNotFoundError\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should match expected product by slug\", function () {\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"id\", 4);\r",
+                  "    pm.expect(jsonData).to.have.property(\"title\", \"Handmade Fresh Table\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"slug\", \"handmade-fresh-table\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"price\", 687);\r",
+                  "    pm.expect(jsonData).to.have.property(\"description\");\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"category\");\r",
+                  "    pm.expect(jsonData.category).to.have.property(\"id\", 5);\r",
+                  "    pm.expect(jsonData.category).to.have.property(\"name\", \"Others\");\r",
+                  "    pm.expect(jsonData.category).to.have.property(\"slug\", \"others\");\r",
+                  "    pm.expect(jsonData.category).to.have.property(\"image\");\r",
+                  "\r",
+                  "    pm.expect(jsonData.images).to.be.an(\"array\");\r",
+                  "    pm.expect(jsonData.images.length).to.eql(3);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.escuelajs.co/api/v1/products/slug/handmade-fresh-table",
+              "protocol": "https",
+              "host": [
+                "api",
+                "escuelajs",
+                "co"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "slug",
+                "handmade-fresh-table"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create a product",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code should be 201\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should not contain database error\", function () {\r",
+                  "    pm.expect(jsonData.name).to.not.eql(\"QueryFailedError\");\r",
+                  "    pm.expect(jsonData.code).to.not.eql(\"SQLITE_CONSTRAINT_UNIQUE\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should match created product data\", function () {\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"title\", \"New Product\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"slug\", \"new-product\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"price\", 10);\r",
+                  "    pm.expect(jsonData).to.have.property(\"description\", \"A description\");\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"images\");\r",
+                  "    pm.expect(jsonData.images).to.be.an(\"array\");\r",
+                  "    pm.expect(jsonData.images[0]).to.eql(\"https://placehold.co/600x400\");\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"category\");\r",
+                  "    pm.expect(jsonData.category).to.have.property(\"id\", 1);\r",
+                  "    pm.expect(jsonData.category).to.have.property(\"name\", \"Clothes\");\r",
+                  "    pm.expect(jsonData.category).to.have.property(\"slug\", \"clothes\");\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"id\");\r",
+                  "    pm.expect(jsonData.id).to.be.a(\"number\");\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"creationAt\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"updatedAt\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"New Product\",\r\n  \"price\": 10,\r\n  \"description\": \"A description\",\r\n  \"categoryId\": 1,\r\n  \"images\": [\"https://placehold.co/600x400\"]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://api.escuelajs.co/api/v1/products/",
+              "protocol": "https",
+              "host": [
+                "api",
+                "escuelajs",
+                "co"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update a product",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code should be 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should not contain error\", function () {\r",
+                  "    pm.expect(jsonData.name).to.not.eql(\"EntityNotFoundError\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should match expected product data\", function () {\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"id\", 1);\r",
+                  "    pm.expect(jsonData).to.have.property(\"title\", \"Change title\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"slug\", \"change-title\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"price\", 100);\r",
+                  "    pm.expect(jsonData).to.have.property(\"description\");\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"images\");\r",
+                  "    pm.expect(jsonData.images).to.be.an(\"array\");\r",
+                  "    pm.expect(jsonData.images[0]).to.eql(\"https://placehold.co/600x400\");\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"category\");\r",
+                  "    pm.expect(jsonData.category).to.have.property(\"id\", 4);\r",
+                  "    pm.expect(jsonData.category).to.have.property(\"name\", \"Shoes\");\r",
+                  "    pm.expect(jsonData.category).to.have.property(\"slug\", \"shoes\");\r",
+                  "    pm.expect(jsonData.category).to.have.property(\"image\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"Change title\",\r\n  \"price\": 100\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://api.escuelajs.co/api/v1/products/1",
+              "protocol": "https",
+              "host": [
+                "api",
+                "escuelajs",
+                "co"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Pagination",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code should be 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should be an array with 10 items\", function () {\r",
+                  "    pm.expect(jsonData).to.be.an(\"array\");\r",
+                  "    pm.expect(jsonData.length).to.eql(10);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should contain expected product (id = 1)\", function () {\r",
+                  "\r",
+                  "    var product = jsonData.find(p => p.id === 1);\r",
+                  "\r",
+                  "    pm.expect(product, \"Product with id=1 not found\").to.not.be.undefined;\r",
+                  "\r",
+                  "    pm.expect(product.title).to.eql(\"Handmade Fresh Table\");\r",
+                  "    pm.expect(product.slug).to.eql(\"handmade-fresh-table\");\r",
+                  "    pm.expect(product.price).to.eql(687);\r",
+                  "\r",
+                  "    pm.expect(product.category.id).to.eql(5);\r",
+                  "    pm.expect(product.category.name).to.eql(\"Others\");\r",
+                  "    pm.expect(product.category.slug).to.eql(\"others\");\r",
+                  "\r",
+                  "    pm.expect(product.images).to.be.an(\"array\");\r",
+                  "    pm.expect(product.images.length).to.eql(3);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.escuelajs.co/api/v1/products?offset=0&limit=10",
+              "protocol": "https",
+              "host": [
+                "api",
+                "escuelajs",
+                "co"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "offset",
+                  "value": "0"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Get categories",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code should be 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should be an array\", function () {\r",
+                  "    pm.expect(jsonData).to.be.an(\"array\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Each category should have valid structure\", function () {\r",
+                  "    jsonData.forEach(function (item) {\r",
+                  "        pm.expect(item).to.have.property(\"id\");\r",
+                  "        pm.expect(item).to.have.property(\"name\");\r",
+                  "        pm.expect(item).to.have.property(\"slug\");\r",
+                  "        pm.expect(item).to.have.property(\"image\");\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should contain Clothes category\", function () {\r",
+                  "\r",
+                  "    var category = jsonData.find(c => c.id === 1);\r",
+                  "\r",
+                  "    pm.expect(category, \"Category with id=1 not found\").to.not.be.undefined;\r",
+                  "\r",
+                  "    pm.expect(category.name).to.eql(\"Clothes\");\r",
+                  "    pm.expect(category.slug).to.eql(\"clothes\");\r",
+                  "\r",
+                  "    pm.expect(category.image).to.be.a(\"string\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.escuelajs.co/api/v1/categories",
+              "protocol": "https",
+              "host": [
+                "api",
+                "escuelajs",
+                "co"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a single category by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code should be 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should match expected category الأساسية\", function () {\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"id\", 1);\r",
+                  "    pm.expect(jsonData).to.have.property(\"name\", \"Clothes\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"slug\", \"clothes\");\r",
+                  "\r",
+                  "    // image flexible (مش بنقارن exact)\r",
+                  "    pm.expect(jsonData.image).to.be.a(\"string\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should contain additional fields\", function () {\r",
+                  "    pm.expect(jsonData).to.have.property(\"creationAt\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"updatedAt\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.escuelajs.co/api/v1/categories/1",
+              "protocol": "https",
+              "host": [
+                "api",
+                "escuelajs",
+                "co"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "categories",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a single category by slug",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code should be 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should match expected category data\", function () {\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"id\", 1);\r",
+                  "    pm.expect(jsonData).to.have.property(\"name\", \"Clothes\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"slug\", \"clothes\");\r",
+                  "\r",
+                  "    pm.expect(jsonData.image).to.eql(\"https://placehold.co/600x400\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.escuelajs.co/api/v1/categories/slug/clothes",
+              "protocol": "https",
+              "host": [
+                "api",
+                "escuelajs",
+                "co"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "categories",
+                "slug",
+                "clothes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create a category",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code should be 201\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should not contain database error\", function () {\r",
+                  "    pm.expect(jsonData.name).to.not.eql(\"QueryFailedError\");\r",
+                  "    pm.expect(jsonData.code).to.not.eql(\"SQLITE_CONSTRAINT_UNIQUE\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should match created category data\", function () {\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"name\", \"New Category\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"slug\", \"new-category\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"image\", \"https://placeimg.com/640/480/any\");\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"id\");\r",
+                  "    pm.expect(jsonData.id).to.be.a(\"number\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"New Category\",\r\n  \"image\": \"https://placeimg.com/640/480/any\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://api.escuelajs.co/api/v1/categories/",
+              "protocol": "https",
+              "host": [
+                "api",
+                "escuelajs",
+                "co"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "categories",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get users",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code should be 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should be an array\", function () {\r",
+                  "    pm.expect(jsonData).to.be.an(\"array\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Each user should have valid structure\", function () {\r",
+                  "    jsonData.forEach(function (user) {\r",
+                  "\r",
+                  "        pm.expect(user).to.have.property(\"id\");\r",
+                  "        pm.expect(user).to.have.property(\"email\");\r",
+                  "        pm.expect(user).to.have.property(\"password\");\r",
+                  "        pm.expect(user).to.have.property(\"name\");\r",
+                  "        pm.expect(user).to.have.property(\"role\");\r",
+                  "        pm.expect(user).to.have.property(\"avatar\");\r",
+                  "\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should contain expected user (id = 1)\", function () {\r",
+                  "\r",
+                  "    var user = jsonData.find(u => u.id === 1);\r",
+                  "\r",
+                  "    pm.expect(user, \"User with id=1 not found\").to.not.be.undefined;\r",
+                  "\r",
+                  "    pm.expect(user.email).to.eql(\"john@mail.com\");\r",
+                  "    pm.expect(user.password).to.eql(\"changeme\");\r",
+                  "    pm.expect(user.name).to.eql(\"Jhon\");\r",
+                  "    pm.expect(user.role).to.eql(\"customer\");\r",
+                  "    pm.expect(user.avatar).to.eql(\"https://i.imgur.com/LDOO4Qs.jpg\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.escuelajs.co/api/v1/users",
+              "protocol": "https",
+              "host": [
+                "api",
+                "escuelajs",
+                "co"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get a Single User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code should be 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should match expected user data\", function () {\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"id\", 1);\r",
+                  "    pm.expect(jsonData).to.have.property(\"email\", \"john@mail.com\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"password\", \"changeme\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"name\", \"Jhon\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"role\", \"customer\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"avatar\", \"https://i.imgur.com/LDOO4Qs.jpg\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should contain additional fields\", function () {\r",
+                  "    pm.expect(jsonData).to.have.property(\"creationAt\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"updatedAt\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.escuelajs.co/api/v1/users/1",
+              "protocol": "https",
+              "host": [
+                "api",
+                "escuelajs",
+                "co"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create a User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code should be 201\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should match expected user data\", function () {\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"id\", 24);\r",
+                  "    pm.expect(jsonData).to.have.property(\"email\", \"nico@gmail.com\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"password\", \"1234\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"name\", \"Nicolas\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"role\", \"customer\");\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"avatar\", \"https://i.imgur.com/yhW6Yw1.jpg\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Nicolas\",\r\n  \"email\": \"nico@gmail.com\",\r\n  \"password\": \"1234\",\r\n  \"avatar\": \"https://picsum.photos/800\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://api.escuelajs.co/api/v1/users/",
+              "protocol": "https",
+              "host": [
+                "api",
+                "escuelajs",
+                "co"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update a User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code should be 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should not be unauthorized\", function () {\r",
+                  "    pm.expect(jsonData.statusCode).to.not.eql(401);\r",
+                  "    pm.expect(jsonData.error).to.not.eql(\"Unauthorized\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should match updated user data\", function () {\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"id\", 4);\r",
+                  "    pm.expect(jsonData).to.have.property(\"email\", \"john@mail.com\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"password\", \"1234\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"name\", \"Change name\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"role\", \"admin\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"avatar\", \"https://i.imgur.com/yhW6Yw1.jpg\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"john@mail.com\",\r\n  \"name\": \"Change name\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://api.escuelajs.co/api/v1/users/1",
+              "protocol": "https",
+              "host": [
+                "api",
+                "escuelajs",
+                "co"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code should be 201 or 200\", function () {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should contain tokens\", function () {\r",
+                  "    pm.expect(jsonData).to.have.property(\"access_token\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"refresh_token\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Tokens should be valid strings\", function () {\r",
+                  "    pm.expect(jsonData.access_token).to.be.a(\"string\");\r",
+                  "    pm.expect(jsonData.refresh_token).to.be.a(\"string\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Tokens should have JWT format\", function () {\r",
+                  "\r",
+                  "    var accessParts = jsonData.access_token.split(\".\");\r",
+                  "    var refreshParts = jsonData.refresh_token.split(\".\");\r",
+                  "\r",
+                  "    pm.expect(accessParts.length).to.eql(3);\r",
+                  "    pm.expect(refreshParts.length).to.eql(3);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"john@mail.com\",\r\n  \"password\": \"changeme\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://api.escuelajs.co/api/v1/auth/login",
+              "protocol": "https",
+              "host": [
+                "api",
+                "escuelajs",
+                "co"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Retrieving User Profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code should be 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should match expected user profile\", function () {\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\"id\", 1);\r",
+                  "    pm.expect(jsonData).to.have.property(\"email\", \"john@mail.com\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"password\", \"changeme\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"name\", \"Jhon\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"role\", \"customer\");\r",
+                  "\r",
+                  "    pm.expect(jsonData).to.have.property(\r",
+                  "        \"avatar\",\r",
+                  "        \"https://api.lorem.space/image/face?w=640&h=480&r=867\"\r",
+                  "    );\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTc3NzI5NTE1NCwiZXhwIjoxNzc5MDIzMTU0fQ.ypLxMAF_hRURR-gOrlYBQN2ay6CHshEpb63tLJx4YPk",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "https://api.escuelajs.co/api/v1/auth/profile",
+              "protocol": "https",
+              "host": [
+                "api",
+                "escuelajs",
+                "co"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Locations",
+      "item": [
+        {
+          "name": "Get locations",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code should be 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should be an array\", function () {\r",
+                  "    pm.expect(jsonData).to.be.an(\"array\");\r",
+                  "    pm.expect(jsonData.length).to.be.above(0);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Each location should have valid structure\", function () {\r",
+                  "    jsonData.forEach(function (item) {\r",
+                  "\r",
+                  "        pm.expect(item).to.have.property(\"id\");\r",
+                  "        pm.expect(item).to.have.property(\"name\");\r",
+                  "        pm.expect(item).to.have.property(\"description\");\r",
+                  "        pm.expect(item).to.have.property(\"latitude\");\r",
+                  "        pm.expect(item).to.have.property(\"longitude\");\r",
+                  "\r",
+                  "        pm.expect(item.id).to.be.a(\"number\");\r",
+                  "        pm.expect(item.name).to.be.a(\"string\");\r",
+                  "        pm.expect(item.description).to.be.a(\"string\");\r",
+                  "        pm.expect(item.latitude).to.be.a(\"number\");\r",
+                  "        pm.expect(item.longitude).to.be.a(\"number\");\r",
+                  "\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Latitude and Longitude should be in valid range\", function () {\r",
+                  "    jsonData.forEach(function (item) {\r",
+                  "\r",
+                  "        pm.expect(item.latitude).to.be.within(-90, 90);\r",
+                  "        pm.expect(item.longitude).to.be.within(-180, 180);\r",
+                  "\r",
+                  "    });\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.escuelajs.co/api/v1/locations",
+              "protocol": "https",
+              "host": [
+                "api",
+                "escuelajs",
+                "co"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "locations"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get locations by origin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code should be 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should be a non-empty array\", function () {\r",
+                  "    pm.expect(jsonData).to.be.an(\"array\");\r",
+                  "    pm.expect(jsonData.length).to.be.above(0);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Each location should have valid structure and data types\", function () {\r",
+                  "    jsonData.forEach(function (item) {\r",
+                  "\r",
+                  "        pm.expect(item).to.have.property(\"id\");\r",
+                  "        pm.expect(item).to.have.property(\"name\");\r",
+                  "        pm.expect(item).to.have.property(\"description\");\r",
+                  "        pm.expect(item).to.have.property(\"latitude\");\r",
+                  "        pm.expect(item).to.have.property(\"longitude\");\r",
+                  "\r",
+                  "        pm.expect(item.id).to.be.a(\"number\");\r",
+                  "        pm.expect(item.name).to.be.a(\"string\").and.not.empty;\r",
+                  "        pm.expect(item.description).to.be.a(\"string\");\r",
+                  "        pm.expect(item.latitude).to.be.a(\"number\");\r",
+                  "        pm.expect(item.longitude).to.be.a(\"number\");\r",
+                  "\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Latitude and Longitude should be within valid geographic range\", function () {\r",
+                  "    jsonData.forEach(function (item) {\r",
+                  "\r",
+                  "        pm.expect(item.latitude).to.be.within(-90, 90);\r",
+                  "        pm.expect(item.longitude).to.be.within(-180, 180);\r",
+                  "\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Location IDs should be unique\", function () {\r",
+                  "    var ids = jsonData.map(item => item.id);\r",
+                  "    var uniqueIds = [...new Set(ids)];\r",
+                  "\r",
+                  "    pm.expect(ids.length).to.eql(uniqueIds.length);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.escuelajs.co/api/v1/locations?origin=6.2071641,-75.5720321",
+              "protocol": "https",
+              "host": [
+                "api",
+                "escuelajs",
+                "co"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "locations"
+              ],
+              "query": [
+                {
+                  "key": "origin",
+                  "value": "6.2071641,-75.5720321"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get locations with a limit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code should be 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should be an array\", function () {\r",
+                  "    pm.expect(jsonData).to.be.an(\"array\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response should respect the limit (10 items)\", function () {\r",
+                  "    pm.expect(jsonData.length).to.eql(10);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Each location should have valid structure\", function () {\r",
+                  "    jsonData.forEach(function (item) {\r",
+                  "\r",
+                  "        pm.expect(item).to.have.property(\"id\");\r",
+                  "        pm.expect(item).to.have.property(\"name\");\r",
+                  "        pm.expect(item).to.have.property(\"description\");\r",
+                  "        pm.expect(item).to.have.property(\"latitude\");\r",
+                  "        pm.expect(item).to.have.property(\"longitude\");\r",
+                  "\r",
+                  "        pm.expect(item.id).to.be.a(\"number\");\r",
+                  "        pm.expect(item.name).to.be.a(\"string\").and.not.empty;\r",
+                  "        pm.expect(item.description).to.be.a(\"string\");\r",
+                  "        pm.expect(item.latitude).to.be.a(\"number\");\r",
+                  "        pm.expect(item.longitude).to.be.a(\"number\");\r",
+                  "\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Latitude and Longitude should be valid\", function () {\r",
+                  "    jsonData.forEach(function (item) {\r",
+                  "        pm.expect(item.latitude).to.be.within(-90, 90);\r",
+                  "        pm.expect(item.longitude).to.be.within(-180, 180);\r",
+                  "    });\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://api.escuelajs.co/api/v1/locations?size=10",
+              "protocol": "https",
+              "host": [
+                "api",
+                "escuelajs",
+                "co"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "locations"
+              ],
+              "query": [
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          "pm.test(\"Response time is less than 1s\", function () {\r",
+          "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+          "});\r",
+          ""
+        ]
+      }
+    }
+  ]
+}
